@@ -1,0 +1,4 @@
+model,checkpoint,model_size_MB,avg_ms_per_image,fps
+YOLO11n_baseline,/kaggle/working/BD-TrafficGuard/models/yolo11n_baseline_best.pt,5.230493545532227,16.559052540469565,60.389928563608684
+YOLO11n_robust_builtin_aug,/kaggle/working/BD-TrafficGuard/models/yolo11n_robust_builtin_aug_best.pt,5.230371475219727,16.146870119991945,61.93150700839965
+YOLO11n_robust_explicit_corruptions,/kaggle/working/BD-TrafficGuard/models/yolo11n_robust_explicit_corruptions_best.pt,5.230371475219727,16.354460320217186,61.14539889548126

@@ -1,0 +1,4 @@
+split,images,unique_widths,unique_heights,mean_width,mean_height,min_width,max_width,min_height,max_height,mean_aspect_ratio
+train,7165,1,1,640.0,640.0,640,640,640,640,1.0
+valid,2046,1,1,640.0,640.0,640,640,640,640,1.0
+test,1024,1,1,640.0,640.0,640,640,640,640,1.0
