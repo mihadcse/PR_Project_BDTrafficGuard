@@ -1,0 +1,145 @@
+Pr Project Notes 
+
+1)  EfficientNet-B0 (Cell 19,20) ,Faster R-CNN (Cell 21),resolution ablation,YOLO-small,no-augmentation ablation etc.
+
+amra atogula model na rekhe just yolo-small ta rakhi ar amader nijer model ta rakhi cause noito project ta beshi complicated hoitese and as amra proposal e bolei disi je already paper pore dekhlam baki model kaj kortese na oto bhalo, and then yolo er paper ta pore bhujlam ora kind of baki shob model er deficiency gula ke overcome kortese but amader toh main focus aita je amra dekhbo augmented images er khetre amader notun yolo model ta bhalo result dei naki .Also ai model rakha unnecessary cause eta amder  goal na amder goal holo Traffic sign detection + recognition in a road scene.And yolo eta already kortese  -  Road image > YOLO > Bounding box> Class
+Amra presentation slide e add kore dibo ne je baki model gula keno choose kori nai .
+
+Amader model ta amn hoile kemon hoi- 
+YOLO11s +  Degradation-aware training +  Small/distant sign-focused augmentation +  Bangladesh-specific corruption benchmark = BD-TrafficGuard
+
+Mane ami boltesilam je YOLO-small ar aamader je robust YOLO ta ase oita rakhi , second robust model ta like - YOLO11n robust built-in augmentation and YOLO11n explicit corruption-aware ai duita na rekhe just aita - BD-TrafficGuard = YOLO-small + explicit degradation-aware training rakhle kemon hoj tokhon explanation ta easier hoito arki  cause amader proposal holo  compare standard training vs degradation-aware augmentation and evaluate robustness under blur, rain, fog, glare, low light and occlusion. not like totally notun akta network amara bar korbo .
+
+pore ebhabe akta comparision dilam arki je just yolos na use kore  amader model ta keno better 
+
+                 Clean      Rain      Fog      Blur      Low Light
+YOLO11s           92%       61%       55%       68%        60%
+BD-TrafficGuard   91%       82%       78%       84%        80%
+
+Normal YOLO performs well on clean images but loses performance under difficult conditions. Our model maintains better performance.
+
+2)  Arekta concern holo amader model tai Multiple robust YOLO versions use kortesi eta ke ki kono bhabe simplify kora jai naki like -  currently 2 robust versions
+
+3)  Also ekhane Huge export/archive section ase oitao simplify korlam arki
+
+
+
+4)  Gaussian noise,Gaussian blur,Motion blur,JPEG compression,Low light,Low contrast,Fog,Rain,Occlusion
+
+Ar atogula augmentation metrics na rekhe better hobe just ai koitai - Blur,Rain,Fog,Glare,Low light,Occlusion  focus kori cause sir just bolse ami project er cheye beshi focus korbo je amra image take kibhabe handle krtesi and change korsi kibhabe on the basis of bangladesh adverse situation , so gaussian noise/blur,Motion blur,JPEG compression egula bad diye baki ta rakhi, and eta better cause tokhon amra each picture dhore sir ke bhujhaite parbo je ekahne eta hoise 
+
+also ai duita ig missing-
+Occlusion 
+Glare
+
+
+5) Also ami chachilam Visual Augmentation Demonstration korte like each augmentation topic dhore akta visualizations dekhaite je actual image ta ki chilo and amra kibhabe scale or filter add kore ki image e convert korsi.Eta just ak cell e 6 ta example diye dekhai dilam .
+Example - 
+Rain - Original image > Synthetic rain streaks added > Rain image
+Fog - Original image > White atmospheric haze added > fog image
+Blur - Original image > Blur kernel applied>  Blurred image
+Low light - Original image > Brightness / gamma reduced >  dark image
+Glare - Original image > Bright light region added >  Glare image
+Occlusion - Original image > Part of traffic sign covered >  Occluded image
+
+ebhabe dekhaile at least bhujhbe amr akisu korsi and amra bhalo explain korte parbo arki.
+eta abr amader slides eo rakha lagbe .
+
+
+
+Fixes -
+
+1. Remove EfficientNet-B0
+2. Remove Faster R-CNN
+3. Keep only 2 actual models
+
+   | Model               | Purpose               |
+   | ------------------- | --------------------- |
+   | YOLO11s             | Standard baseline     |
+   | BD-TrafficGuard     | Proposed robust model |
+
+4. Merge the two current robust YOLO versions into ONE
+   Remove:
+   * YOLO11n + built-in augmentation
+   * YOLO11n + explicit corruption
+   Keep only:
+   BD-TrafficGuard = YOLO11s + explicit degradation-aware training
+
+5. Change YOLO11n → YOLO11s (Eta boltesi karon amader YOLO11s er paper ase jeta thike bolte parbo eta bhujhe korsi YOLOn er dharona  amr nai)
+   Since your final baseline is YOLO-small, use the same YOLO11s architecture for both models:
+   **Baseline:** YOLO11s + normal training
+   **Proposed:** YOLO11s + degradation-aware training
+   This makes the comparison fair because the architecture stays the same.
+
+ 
+
+6. Remove unnecessary ablations
+   * Resolution 416/640/960 ablation
+   * No-augmentation ablation
+   * EfficientNet ablation
+   * Faster R-CNN comparison
+
+7. Reduce corruption types to exactly 6
+
+   Blur | Rain | Fog | Glare | Low Light | Occlusion
+
+   Remove from the main experiment:
+   * Gaussian noise
+   * JPEG compression
+   * Low contrast
+
+8. Add the missing Glare augmentation
+
+9. Add the missing Occlusion augmentation - Make it specifically cover part of a traffic-sign bounding box rather than randomly hiding an unrelated part of the image.
+                                           Original sign → part of sign covered → partially occluded sign**
+10.Create ONE visual augmentation cell
+
+One figure containing six examples:
+Original → Blur
+Original → Rain
+Original → Fog
+Original → Glare
+Original → Low Light
+Original → Occlusion
+
+
+11. Keep the clean/corrupted evaluation
+
+For both models:
+
+Clean
+↓
+Blur
+↓
+Rain
+↓
+Fog
+↓
+Glare
+↓
+Low Light
+↓
+Occlusion
+Then compare mAP, Precision, Recall and F1.
+
+12.Keep Robustness Drop = Clean mAP − Corrupted mAP**. 
+
+13.Keep FPS, inference time and model size
+
+14.Simplify the export section
+results.csv
+plots/
+models/
+Remove unnecessary:
+
+* pickle
+* JSON
+* duplicate Excel exports
+* metadata exports
+* analysis workspace
+* huge archive/ZIP cells
+ 
+15. Central idea: Can degradation-aware training make YOLO11s more robust to Bangladesh-specific adverse road conditions while maintaining good clean-image performance?
+novelty is the degradation-aware training + Bangladesh-specific corruption benchmark, not inventing a new backbone.
+
+
